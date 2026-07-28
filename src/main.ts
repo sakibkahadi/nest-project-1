@@ -1,10 +1,21 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './interceptors/transform/transform.interceptor';
+import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './common/filtlers/http-exception/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // for use prefix before the route
   app.setGlobalPrefix('api/v1');
+  // for enable dat validation by dto globally
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
+  app.useGlobalFilters(new HttpExceptionFilter()); // for use interceptors
   app.useGlobalInterceptors(new TransformInterceptor(app.get(Reflector)));
   await app.listen(process.env.PORT ?? 3000);
 }
