@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { softDeletePlugin } from 'src/common/plugins/soft-delete.plugin';
 
 export enum Status {
   ACTIVE = 'Active',
@@ -28,6 +29,10 @@ export class PageName extends Document {
 
   @Prop({ default: 0 })
   position!: number;
+
+  @Prop({ default: false })
+  isDeleted!: boolean;
 }
 
 export const PageNameSchema = SchemaFactory.createForClass(PageName);
+PageNameSchema.plugin(softDeletePlugin);

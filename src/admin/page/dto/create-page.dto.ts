@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -22,4 +23,8 @@ export class CreatePageNameDto {
   @IsNumber()
   @IsOptional()
   position?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  isDeleted?: boolean;
 }

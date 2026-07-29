@@ -3,6 +3,7 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -13,13 +14,24 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp(); // with this we tell nest js we don't work with a web socket we work http protocol. means will aceess request and response
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+    const isDevelopment = process.env.NODE_ENV === 'development';
 
-    const status = exception.getStatus();
+    const status =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
+    const message =
+      exception instanceof HttpException
+        ? exception.message
+        : 'Internal server error';
+
     response.status(status).json({
-      // statusCode: status,
       status: false,
-      message: exception.message,
+      message: message,
       data: null,
+      ...(isDevelopment && {
+        stack: exception instanceof Error ? exception.stack : null,
+      }),
     });
   }
 }

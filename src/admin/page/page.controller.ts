@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Param,
   Post,
   Query,
   UseInterceptors,
@@ -13,6 +12,7 @@ import { PageService } from './page.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ShowPageDto } from './dto/show-page.dto';
 import { UpdatePageNameDto } from './dto/update-page.dto';
+import { DeletePageNameDto } from './dto/delete-page.dot';
 
 @Controller('admin/page-name')
 export class PageController {
@@ -43,5 +43,13 @@ export class PageController {
   @Message('Page fetched successfully')
   getPageById(@Query() query: ShowPageDto) {
     return this.pageNameService.getPageById(query);
+  }
+
+  @Post('delete')
+  @UseInterceptors(AnyFilesInterceptor())
+  @Message('Page deleted successfully')
+  // body always return as object so direct uuid cannot be accesd need of destructuire or get as paylaod
+  delete(@Body() payload: DeletePageNameDto) {
+    return this.pageNameService.deletePage(payload?.uuid);
   }
 }

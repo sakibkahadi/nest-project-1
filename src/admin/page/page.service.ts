@@ -65,7 +65,6 @@ export class PageService {
       throw new BadRequestException('UUID is required');
     }
     const page = await this.pageNameModal.findOne({ uuid: query.uuid });
-    console.log(page);
     if (!page) {
       {
         {
@@ -112,5 +111,21 @@ export class PageService {
     }
 
     return await isUUIDExist.save();
+  }
+
+  async deletePage(uuid: string): Promise<[]> {
+    if (!uuid) {
+      throw new BadRequestException('UUID is required');
+    }
+    const page = await this.pageNameModal.findOne({
+      uuid: uuid,
+      isDeleted: false,
+    });
+    if (!page) {
+      throw new NotFoundException('page is not found');
+    }
+    page.isDeleted = true;
+    await page.save();
+    return [];
   }
 }
