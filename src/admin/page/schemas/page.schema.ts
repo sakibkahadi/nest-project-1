@@ -17,7 +17,6 @@ export class PageName extends Document {
 
   @Prop({
     required: true,
-    unique: true,
     lowercase: true,
     trim: true,
     index: true,
@@ -36,3 +35,13 @@ export class PageName extends Document {
 
 export const PageNameSchema = SchemaFactory.createForClass(PageName);
 PageNameSchema.plugin(softDeletePlugin);
+
+PageNameSchema.index(
+  { slug: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      isDeleted: false,
+    },
+  },
+);

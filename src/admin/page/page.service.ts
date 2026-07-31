@@ -125,6 +125,7 @@ export class PageService {
       throw new NotFoundException('page is not found');
     }
     page.isDeleted = true;
+    page.status = Status.INACTIVE;
     await page.save();
     return [];
   }
