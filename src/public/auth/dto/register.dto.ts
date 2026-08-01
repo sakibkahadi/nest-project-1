@@ -4,7 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  Matches,
+  // Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -22,13 +22,13 @@ export class RegisterDto {
   @IsString()
   @MinLength(8)
   @MaxLength(32)
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_\-+=])[A-Za-z\d@$!%*?&#^()_\-+=]+$/,
-    {
-      message:
-        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
-    },
-  )
+  // @Matches(
+  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_\-+=])[A-Za-z\d@$!%*?&#^()_\-+=]+$/,
+  //   {
+  //     message:
+  //       'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+  //   },
+  // )
   password!: string;
 
   @IsOptional()

@@ -1,15 +1,7 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Query,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { Message } from 'src/common/decorators/message/message.decorator';
 import { CreatePageNameDto } from './dto/create-page.dto';
 import { PageService } from './page.service';
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ShowPageDto } from './dto/show-page.dto';
 import { UpdatePageNameDto } from './dto/update-page.dto';
 import { DeletePageNameDto } from './dto/delete-page.dot';
@@ -20,14 +12,12 @@ export class PageController {
 
   @Post('create')
   // this interceptors allow to use formdata
-  @UseInterceptors(AnyFilesInterceptor())
   @Message('Page created successfully')
   create(@Body() payload: CreatePageNameDto) {
     return this.pageNameService.createPage(payload);
   }
 
   @Post('update')
-  @UseInterceptors(AnyFilesInterceptor())
   @Message('Page updated successfully')
   update(@Body() payload: UpdatePageNameDto) {
     return this.pageNameService.updatePage(payload);
@@ -46,7 +36,6 @@ export class PageController {
   }
 
   @Post('delete')
-  @UseInterceptors(AnyFilesInterceptor())
   @Message('Page deleted successfully')
   // body always return as object so direct uuid cannot be accesd need of destructuire or get as paylaod
   delete(@Body() payload: DeletePageNameDto) {

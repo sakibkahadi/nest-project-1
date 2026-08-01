@@ -14,3 +14,5 @@ import { PageName, PageNameSchema } from './schemas/page.schema';
   providers: [PageService],
 })
 export class PageModule {}
+
+

@@ -16,18 +16,26 @@ export class HttpExceptionFilter implements ExceptionFilter {
     // const request = ctx.getRequest<Request>();
     const isDevelopment = process.env.NODE_ENV === 'development';
 
+    // get dto message error
+    const errorReponse =
+      exception instanceof HttpException ? exception.getResponse() : null;
+
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
     const message =
-      exception instanceof HttpException
-        ? exception.message
-        : 'Internal server error';
+      typeof errorReponse === 'object' &&
+      errorReponse !== null &&
+      'message' in errorReponse
+        ? errorReponse.message
+        : exception instanceof HttpException
+          ? exception.message
+          : 'Internal server error';
 
     response.status(status).json({
       status: false,
-      message: message,
+      message,
       data: null,
       ...(isDevelopment && {
         stack: exception instanceof Error ? exception.stack : null,
