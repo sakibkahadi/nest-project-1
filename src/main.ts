@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { TransformInterceptor } from './interceptors/transform/transform.interceptor';
+import { TransformInterceptor } from './common/interceptors/transform/transform.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filtlers/http-exception/http-exception.filter';
 
@@ -16,6 +16,7 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new HttpExceptionFilter()); // for use interceptors
+  // reflector reads the setMetadata from curstom decorator as we use custom decorator in tranformInterceptor thats why we use app.get(Reflector) this here
   app.useGlobalInterceptors(new TransformInterceptor(app.get(Reflector)));
   await app.listen(process.env.PORT ?? 3000);
 }

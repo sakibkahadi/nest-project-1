@@ -19,7 +19,6 @@ export class PageName extends Document {
     required: true,
     lowercase: true,
     trim: true,
-    index: true,
   })
   slug!: string;
 

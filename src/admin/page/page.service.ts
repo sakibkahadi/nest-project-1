@@ -57,14 +57,15 @@ export class PageService {
   async getAllPage(): Promise<PageName[]> {
     return this.pageNameModal
       .find({ status: Status.ACTIVE })
-      .sort({ position: 1 });
+      .sort({ position: 1 })
+      .exec();
   }
 
   async getPageById(query: ShowPageDto): Promise<PageName> {
     if (!query?.uuid) {
       throw new BadRequestException('UUID is required');
     }
-    const page = await this.pageNameModal.findOne({ uuid: query.uuid });
+    const page = await this.pageNameModal.findOne({ uuid: query.uuid }).exec();
     if (!page) {
       {
         {
